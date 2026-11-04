@@ -3,7 +3,7 @@ import { Switch } from '@clickhouse/click-ui';
 import { PermissionTypes } from 'librechat-data-provider';
 import type * as t from '@/types';
 import { SelectAllHeader } from '@/components/shared';
-import { PERMISSION_TYPE_SCHEMA } from '@/constants';
+import { PERMISSION_TYPE_SCHEMA, USAGE_PERMISSION_TYPE } from '@/constants';
 import { useLocalize } from '@/hooks';
 import { cn } from '@/utils';
 
@@ -25,6 +25,7 @@ const PERMISSION_TYPE_ORDER: PermissionTypes[] = [
   PermissionTypes.FILE_CITATIONS,
   PermissionTypes.PEOPLE_PICKER,
   PermissionTypes.MARKETPLACE,
+  USAGE_PERMISSION_TYPE,
 ];
 
 const multiPermTypes = PERMISSION_TYPE_ORDER.filter((pt) => PERMISSION_TYPE_SCHEMA[pt].length > 1);

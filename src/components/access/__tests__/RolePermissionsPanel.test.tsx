@@ -36,3 +36,23 @@ describe('RolePermissionsPanel permission headers', () => {
     expect(toggle).toHaveAttribute('aria-expanded', 'true');
   });
 });
+
+describe('RolePermissionsPanel usage permission', () => {
+  it('lists Usage among the allowed features and saves it as USAGE.USE', async () => {
+    const user = userEvent.setup();
+    const onChange = vi.fn();
+    render(<RolePermissionsPanel permissions={defaultPermissions()} onChange={onChange} />);
+
+    const usageSwitch = screen.getByRole('switch', { name: 'com_perm_type_USAGE' });
+    expect(usageSwitch).not.toBeChecked();
+
+    await user.click(usageSwitch);
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({ USAGE: expect.objectContaining({ USE: true }) }),
+    );
+  });
+
+  it('starts a new role with Usage off, like every other feature', () => {
+    expect(defaultPermissions()).toMatchObject({ USAGE: { USE: false } });
+  });
+});

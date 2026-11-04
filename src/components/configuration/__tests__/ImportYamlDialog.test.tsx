@@ -128,7 +128,7 @@ describe('ImportYamlDialog wizard', () => {
     );
     await toPreview();
     const dialog = screen.getByRole('dialog');
-    expect(within(dialog).getByText('Starting credits')).toBeInTheDocument();
+    expect(within(dialog).getByText('Starting balance')).toBeInTheDocument();
     expect(within(dialog).getByText('1,000,000 (librechat.yaml)')).toBeInTheDocument();
     expect(within(dialog).queryByText('Enabled')).toBeNull();
     fireEvent.click(

@@ -15,6 +15,7 @@ import { Route as AppIndexRouteImport } from './routes/_app/index'
 import { Route as AppAccessRouteImport } from './routes/_app/access'
 import { Route as AppGrantsRouteImport } from './routes/_app/grants'
 import { Route as AppHelpRouteImport } from './routes/_app/help'
+import { Route as AppUsageRouteImport } from './routes/_app/usage'
 import { Route as AppUsersRouteImport } from './routes/_app/users'
 import { Route as AppConfigurationIndexRouteImport } from './routes/_app/configuration/index'
 import { Route as AuthProviderCallbackRouteImport } from './routes/auth/$provider/callback'
@@ -48,6 +49,11 @@ const AppHelpRoute = AppHelpRouteImport.update({
   path: '/help',
   getParentRoute: () => AppRoute,
 } as any)
+const AppUsageRoute = AppUsageRouteImport.update({
+  id: '/usage',
+  path: '/usage',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppUsersRoute = AppUsersRouteImport.update({
   id: '/users',
   path: '/users',
@@ -70,6 +76,7 @@ export interface FileRoutesByFullPath {
   '/access': typeof AppAccessRoute
   '/grants': typeof AppGrantsRoute
   '/help': typeof AppHelpRoute
+  '/usage': typeof AppUsageRoute
   '/users': typeof AppUsersRoute
   '/auth/$provider/callback': typeof AuthProviderCallbackRoute
   '/configuration/': typeof AppConfigurationIndexRoute
@@ -79,6 +86,7 @@ export interface FileRoutesByTo {
   '/access': typeof AppAccessRoute
   '/grants': typeof AppGrantsRoute
   '/help': typeof AppHelpRoute
+  '/usage': typeof AppUsageRoute
   '/users': typeof AppUsersRoute
   '/': typeof AppIndexRoute
   '/auth/$provider/callback': typeof AuthProviderCallbackRoute
@@ -91,6 +99,7 @@ export interface FileRoutesById {
   '/_app/access': typeof AppAccessRoute
   '/_app/grants': typeof AppGrantsRoute
   '/_app/help': typeof AppHelpRoute
+  '/_app/usage': typeof AppUsageRoute
   '/_app/users': typeof AppUsersRoute
   '/_app/': typeof AppIndexRoute
   '/auth/$provider/callback': typeof AuthProviderCallbackRoute
@@ -104,6 +113,7 @@ export interface FileRouteTypes {
     | '/access'
     | '/grants'
     | '/help'
+    | '/usage'
     | '/users'
     | '/auth/$provider/callback'
     | '/configuration/'
@@ -113,6 +123,7 @@ export interface FileRouteTypes {
     | '/access'
     | '/grants'
     | '/help'
+    | '/usage'
     | '/users'
     | '/'
     | '/auth/$provider/callback'
@@ -124,6 +135,7 @@ export interface FileRouteTypes {
     | '/_app/access'
     | '/_app/grants'
     | '/_app/help'
+    | '/_app/usage'
     | '/_app/users'
     | '/_app/'
     | '/auth/$provider/callback'
@@ -180,6 +192,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppHelpRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/usage': {
+      id: '/_app/usage'
+      path: '/usage'
+      fullPath: '/usage'
+      preLoaderRoute: typeof AppUsageRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/users': {
       id: '/_app/users'
       path: '/users'
@@ -208,6 +227,7 @@ interface AppRouteChildren {
   AppAccessRoute: typeof AppAccessRoute
   AppGrantsRoute: typeof AppGrantsRoute
   AppHelpRoute: typeof AppHelpRoute
+  AppUsageRoute: typeof AppUsageRoute
   AppUsersRoute: typeof AppUsersRoute
   AppIndexRoute: typeof AppIndexRoute
   AppConfigurationIndexRoute: typeof AppConfigurationIndexRoute
@@ -217,6 +237,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppAccessRoute: AppAccessRoute,
   AppGrantsRoute: AppGrantsRoute,
   AppHelpRoute: AppHelpRoute,
+  AppUsageRoute: AppUsageRoute,
   AppUsersRoute: AppUsersRoute,
   AppIndexRoute: AppIndexRoute,
   AppConfigurationIndexRoute: AppConfigurationIndexRoute,

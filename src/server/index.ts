@@ -7,4 +7,5 @@ export * from './groups';
 export * from './langfuse';
 export * from './roles';
 export * from './scopes';
+export * from './usage';
 export * from './users';

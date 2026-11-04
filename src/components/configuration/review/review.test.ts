@@ -577,7 +577,7 @@ describe('buildReviewModel', () => {
     expect(custom.rows[0]).toMatchObject({ label: 'Zai 2', noun: 'endpoint' });
     const system = model.tabs[1].sections[0];
     expect(system.title).toBe('Balance & credits');
-    expect(system.rows[0].label).toBe('Starting credits');
+    expect(system.rows[0].label).toBe('Starting balance');
   });
 
   it('lists changes of a nested list under the entry that holds it', () => {

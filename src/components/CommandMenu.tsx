@@ -137,6 +137,12 @@ export function CommandMenu({ open, onOpenChange }: t.CommandMenuProps) {
       onSelect: () => navigateTo('/grants'),
     },
     {
+      id: 'nav-usage',
+      icon: 'bar-chart',
+      label: localize('com_nav_usage'),
+      onSelect: () => navigateTo('/usage'),
+    },
+    {
       id: 'nav-help',
       icon: 'question',
       label: localize('com_nav_help'),

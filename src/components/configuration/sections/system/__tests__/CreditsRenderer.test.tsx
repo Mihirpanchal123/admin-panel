@@ -16,31 +16,48 @@ const YAML = {
 };
 
 describe('CreditsRenderer', () => {
-  it('renders balance and transactions as one card with credits and dollars', () => {
+  it('renders balance and transactions as one card, entered in dollars with credits shown', () => {
     renderSections({ sections: SECTIONS, yaml: YAML });
     expect(screen.getAllByRole('heading', { level: 2 })).toHaveLength(1);
     expect(screen.getByRole('heading', { level: 2, name: /Balance & credits/ })).toBeVisible();
-    expect(screen.getByLabelText('Starting credits')).toHaveValue('1,000,000');
-    expect(screen.getByText('Worth about $1.00 of model usage')).toBeInTheDocument();
-    expect(screen.getByLabelText('Credits per refill')).toHaveValue('1,000,000');
+    expect(screen.getByLabelText('Starting balance')).toHaveValue('1.00');
+    expect(screen.getByText('= 1,000,000 credits')).toBeInTheDocument();
+    expect(screen.getByLabelText('Amount per refill')).toHaveValue('1.00');
+    expect(screen.getByText('Each refill is 1,000,000 credits.')).toBeInTheDocument();
     expect(screen.getByLabelText('Refill interval')).toHaveValue(4);
     expect(screen.getByLabelText('Refill interval unit')).toHaveDisplayValue('hours');
   });
 
-  it('reads separators in typed credits and stages the number', async () => {
+  it('stages typed dollars as exact credits and rejects what is not a dollar amount', async () => {
     const onChange = vi.fn();
     renderSections({ sections: SECTIONS, yaml: YAML, onChange });
-    const input = screen.getByLabelText('Starting credits');
-    fireEvent.change(input, { target: { value: '2,500,000' } });
+    const input = screen.getByLabelText('Starting balance');
+    fireEvent.change(input, { target: { value: '$2.50' } });
     await act(async () => {
       fireEvent.blur(input);
     });
     expect(onChange).toHaveBeenCalledWith('balance.startBalance', 2500000);
+    fireEvent.change(input, { target: { value: '0.29' } });
+    await act(async () => {
+      fireEvent.blur(input);
+    });
+    expect(onChange).toHaveBeenCalledWith('balance.startBalance', 290000);
     fireEvent.change(input, { target: { value: '12abc' } });
     await act(async () => {
       fireEvent.blur(input);
     });
-    expect(screen.getByRole('alert')).toHaveTextContent('whole number of credits');
+    expect(screen.getByRole('alert')).toHaveTextContent('dollar amount');
+  });
+
+  it('converts the refill amount from dollars too', async () => {
+    const onChange = vi.fn();
+    renderSections({ sections: SECTIONS, yaml: YAML, onChange });
+    const input = screen.getByLabelText('Amount per refill');
+    fireEvent.change(input, { target: { value: '0.25' } });
+    await act(async () => {
+      fireEvent.blur(input);
+    });
+    expect(onChange).toHaveBeenCalledWith('balance.refillAmount', 250000);
   });
 
   it('shows the refill sentence only while auto-refill is on', () => {
@@ -48,7 +65,7 @@ describe('CreditsRenderer', () => {
       sections: SECTIONS,
       yaml: { balance: { ...YAML.balance, autoRefillEnabled: false } },
     });
-    expect(screen.queryByLabelText('Credits per refill')).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('Amount per refill')).not.toBeInTheDocument();
     expect(screen.getByText(/Turn on auto-refill/)).toBeInTheDocument();
   });
 

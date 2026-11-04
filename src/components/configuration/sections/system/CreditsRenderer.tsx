@@ -63,20 +63,24 @@ function StartingCreditsRow({ fieldProps }: { fieldProps: t.FieldRendererProps }
       <div className="flex flex-col gap-1">
         {fieldProps.disabled ? (
           <span id={id} className="static-value">
-            {localize('com_config_credits_amount', { amount: (shown ?? 0).toLocaleString() })}
+            {localize('com_config_credits_usd_static', {
+              usd: formatUsd((shown ?? 0) / CREDITS_PER_USD),
+              amount: (shown ?? 0).toLocaleString(),
+            })}
           </span>
         ) : (
           <CreditsInput
             id={id}
+            unit="usd"
             value={typeof input.value === 'number' ? input.value : undefined}
             placeholder={typeof input.placeholder === 'number' ? input.placeholder : undefined}
             onChange={(next) => start.set(next)}
             aria-label={label}
           />
         )}
-        {shown != null && (
+        {shown != null && !fieldProps.disabled && (
           <span className="text-xs text-(--cui-color-text-muted)">
-            {localize('com_config_credits_usd', { usd: formatUsd(shown / CREDITS_PER_USD) })}
+            {localize('com_config_credits_equals', { amount: shown.toLocaleString() })}
           </span>
         )}
       </div>

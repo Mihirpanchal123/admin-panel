@@ -1,8 +1,21 @@
 import { PermissionTypes, Permissions } from 'librechat-data-provider';
 import type * as t from '@/types';
 
+/**
+ * LibreChat's `USAGE` permission (seeing one's own token usage) is newer than the
+ * pinned `librechat-data-provider`, whose enum lacks it. Drop this shim once the
+ * dependency ships `PermissionTypes.USAGE`; the dedupe below keeps it safe until then.
+ */
+export const USAGE_PERMISSION_TYPE = 'USAGE' as PermissionTypes;
+
+/** Every role permission type LibreChat accepts, the shimmed ones included. */
+export const ROLE_PERMISSION_TYPES: PermissionTypes[] = [
+  ...new Set([...Object.values(PermissionTypes), USAGE_PERMISSION_TYPE]),
+];
+
 /** Maps each PermissionType to the subset of Permissions it supports. */
 export const PERMISSION_TYPE_SCHEMA: Record<PermissionTypes, Permissions[]> = {
+  [USAGE_PERMISSION_TYPE]: [Permissions.USE],
   [PermissionTypes.BOOKMARKS]: [Permissions.USE],
   [PermissionTypes.PROMPTS]: [
     Permissions.USE,
@@ -60,7 +73,7 @@ export const PERMISSION_TYPE_SCHEMA: Record<PermissionTypes, Permissions[]> = {
 
 export function defaultPermissions(): t.RolePermissions {
   const perms = {} as t.RolePermissions;
-  for (const type of Object.values(PermissionTypes)) {
+  for (const type of ROLE_PERMISSION_TYPES) {
     const section: Record<string, boolean> = {};
     for (const p of PERMISSION_TYPE_SCHEMA[type]) {
       section[p] = false;

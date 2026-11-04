@@ -20,7 +20,7 @@ import { RecordObjectField } from '../../fields/RecordObjectField';
 import { SecretNotSentNotice } from '../../fields/SecretField';
 import { UnknownSettings } from '../../UnknownSettings';
 import { InstructionsField } from './Instructions';
-import { TransportSelect } from './Transport';
+import { TransportSelect } from './Transport.tsx';
 import { labelForPath } from '../../meta';
 import { McpAuthMethod } from './Method';
 import { McpFieldGroup } from './Group';

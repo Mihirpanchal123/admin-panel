@@ -98,7 +98,7 @@ export function RefillRow({
   const control = disabled ? (
     <span id={id} className="static-value">
       {localize('com_config_credits_refill_sentence_static', {
-        amount: (shownAmount ?? 0).toLocaleString(),
+        amount: formatUsd((shownAmount ?? 0) / CREDITS_PER_USD),
         every: String(asNumber(every.own) ?? asNumber(every.fallback) ?? ''),
         unit: unitLabel(unit.own ?? unit.fallback),
       })}
@@ -109,6 +109,7 @@ export function RefillRow({
         <span>{localize('com_config_credits_refill_add')}</span>
         <CreditsInput
           id={id}
+          unit="usd"
           value={asNumber(amountInput.value)}
           placeholder={asNumber(amountInput.placeholder)}
           onChange={(next) => amount.set(next)}
@@ -140,9 +141,7 @@ export function RefillRow({
       </div>
       {shownAmount != null && (
         <span className="text-xs text-(--cui-color-text-muted)">
-          {localize('com_config_credits_refill_usd', {
-            usd: formatUsd(shownAmount / CREDITS_PER_USD),
-          })}
+          {localize('com_config_credits_refill_equals', { amount: shownAmount.toLocaleString() })}
         </span>
       )}
     </div>

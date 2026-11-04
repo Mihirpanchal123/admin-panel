@@ -22,7 +22,19 @@ export interface EmailDomainListFieldProps {
   'aria-describedby'?: string;
 }
 
-/** A whole-number input that shows thousands separators (credits). */
+/** What a credits input accepts: whole credits, or US dollars converted to credits. */
+export type CreditsInputUnit = 'credits' | 'usd';
+
+/** How a credits input shows and reads one unit; the value stays in credits. */
+export interface CreditsUnitFormat {
+  toText: (credits: number) => string;
+  parse: (text: string) => number | null;
+  inputMode: 'numeric' | 'decimal';
+  suffixKey: string;
+  invalidKey: string;
+}
+
+/** A credit amount input that shows thousands separators; `value` is always credits. */
 export interface CreditsInputProps {
   id: string;
   value: number | undefined;
@@ -31,7 +43,10 @@ export interface CreditsInputProps {
   /** The value in effect without an own value, shown as the placeholder. */
   placeholder?: number;
   disabled?: boolean;
+  /** In credits, whatever the unit. */
   min?: number;
+  /** What the admin types; `usd` converts on commit at `CREDITS_PER_USD`. */
+  unit?: CreditsInputUnit;
   'aria-label'?: string;
   'aria-describedby'?: string;
 }
